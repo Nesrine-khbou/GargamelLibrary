@@ -34,8 +34,6 @@
             comboBox1 = new ComboBox();
             label3 = new Label();
             tbTitle = new TextBox();
-            tbValue = new TextBox();
-            label4 = new Label();
             label5 = new Label();
             groupBox1 = new GroupBox();
             cbMagicType = new ComboBox();
@@ -112,24 +110,6 @@
             tbTitle.Size = new Size(139, 27);
             tbTitle.TabIndex = 5;
             tbTitle.TextChanged += tbTitle_TextChanged;
-            // 
-            // tbValue
-            // 
-            tbValue.Enabled = false;
-            tbValue.Location = new Point(102, 235);
-            tbValue.Margin = new Padding(3, 4, 3, 4);
-            tbValue.Name = "tbValue";
-            tbValue.Size = new Size(137, 27);
-            tbValue.TabIndex = 6;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(47, 245);
-            label4.Name = "label4";
-            label4.Size = new Size(52, 20);
-            label4.TabIndex = 7;
-            label4.Text = "Value :";
             // 
             // label5
             // 
@@ -305,8 +285,6 @@
             Controls.Add(bAdd);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
-            Controls.Add(label4);
-            Controls.Add(tbValue);
             Controls.Add(tbTitle);
             Controls.Add(label3);
             Controls.Add(comboBox1);
@@ -336,8 +314,6 @@
         private ComboBox comboBox1;
         private Label label3;
         private TextBox tbTitle;
-        private TextBox tbValue;
-        private Label label4;
         private Label label5;
         private GroupBox groupBox1;
         private GroupBox groupBox2;

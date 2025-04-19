@@ -14,6 +14,5 @@ namespace BLGargamelLibrary
 
         public string? Title { get; set; }
 
-        protected int Value { get; set; }
     }
 }
