@@ -155,6 +155,28 @@
             button5.Text = "Return";
             button5.UseVisualStyleBackColor = true;
             button5.Click += button5_Click;
+
+            // Modify Button
+            btnModify = new Button();
+            btnModify.Location = new Point(408, 266);
+            btnModify.Name = "btnModify";
+            btnModify.Size = new Size(94, 29);
+            btnModify.TabIndex = 13;
+            btnModify.Text = "Modify";
+            btnModify.UseVisualStyleBackColor = true;
+            btnModify.Click += btnModify_Click;
+
+            // Delete Button
+            btnDelete = new Button();
+            btnDelete.Location = new Point(408, 336);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(94, 29);
+            btnDelete.TabIndex = 14;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
+
+
             // 
             // numericUpDown1
             // 
@@ -181,6 +203,8 @@
             Controls.Add(textBox1);
             Controls.Add(button2);
             Controls.Add(button1);
+            Controls.Add(btnModify);
+            Controls.Add(btnDelete);
             Controls.Add(numericUpDown1);
             Name = "SmurfForm";
             Text = "SmurfForm";
@@ -205,5 +229,7 @@
         private Button button4;
         private Button button5;
         private NumericUpDown numericUpDown1;
+        private Button btnModify;
+        private Button btnDelete;
     }
 }

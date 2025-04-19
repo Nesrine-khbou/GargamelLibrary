@@ -126,6 +126,36 @@ public static class LibraryManager
             return context.Smurfs.ToList();
         }
     }
+
+    // Add these methods to your LibraryManager class
+    public static void UpdateSmurf(int id, string name, double height, SmurfDescription description)
+    {
+        using (var context = new LibraryContext())
+        {
+            var smurf = context.Smurfs?.FirstOrDefault(s => s.Id == id);
+            if (smurf != null)
+            {
+                smurf.Name = name;
+                smurf.Height = height;
+                smurf.Description = description;
+                context.SaveChanges();
+            }
+        }
+    }
+
+    public static void DeleteSmurf(int id)
+    {
+        using (var context = new LibraryContext())
+        {
+            var smurf = context.Smurfs?.FirstOrDefault(s => s.Id == id);
+            if (smurf != null)
+            {
+                context.Smurfs?.Remove(smurf);
+                context.SaveChanges();
+            }
+        }
+    }
+
     public static void AddIngredient(string name, string type, string location, string color)
     {
         using (var context = new LibraryContext())
