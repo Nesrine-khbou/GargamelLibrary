@@ -205,4 +205,34 @@ public static class LibraryManager
             return context.Ingredients?.ToList() ?? new List<Ingredient>();
         }
     }
+
+
+    public static void UpdateIngredient(int id, string name, string type, string location, string color)
+    {
+        using (var context = new LibraryContext())
+        {
+            var ingredient = context.Ingredients?.FirstOrDefault(i => i.Id == id);
+            if (ingredient != null)
+            {
+                ingredient.Name = name;
+                ingredient.Type = type;
+                ingredient.Location = location;
+                ingredient.Color = color;
+                context.SaveChanges();
+            }
+        }
+    }
+
+    public static void DeleteIngredient(int id)
+    {
+        using (var context = new LibraryContext())
+        {
+            var ingredient = context.Ingredients?.FirstOrDefault(i => i.Id == id);
+            if (ingredient != null)
+            {
+                context.Ingredients?.Remove(ingredient);
+                context.SaveChanges();
+            }
+        }
+    }
 }
