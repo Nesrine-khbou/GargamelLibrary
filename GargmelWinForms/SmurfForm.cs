@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLGargamelLibrary;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace GargmelWinForms
 {
@@ -132,7 +133,7 @@ namespace GargmelWinForms
             {
                 LibraryManager.UpdateSmurf(
                     selectedSmurf.Id,
-                    textBox1.Text,
+                textBox1.Text,
                     (double)numericUpDown1.Value,
                     (SmurfDescription)comboBox1.SelectedItem
                 );

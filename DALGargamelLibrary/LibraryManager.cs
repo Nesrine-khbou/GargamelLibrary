@@ -14,7 +14,7 @@ public static class LibraryManager
         }
     }
 
-   // Ajoute un RecipeBook dans la base de données.
+    // Ajoute un RecipeBook dans la base de données.
     public static void AddRecipeBook(int serial, string title, int numberOfRecipes)
     {
         using (var context = new LibraryContext())
@@ -64,7 +64,7 @@ public static class LibraryManager
         }
     }
 
-   // Récupère tous les livres (SpellBooks et RecipeBooks) de la base de données.
+    // Récupère tous les livres (SpellBooks et RecipeBooks) de la base de données.
     public static List<Book> GetAllBooks()
     {
         using (var context = new LibraryContext())
@@ -102,6 +102,37 @@ public static class LibraryManager
             return context.Clients.ToList();
         }
     }
+
+
+    public static void UpdateClient(int id, string name, Speciality speciality, LevelOfMagic levelOfMagic)
+    {
+        using (var context = new LibraryContext())
+        {
+            var client = context.Clients?.FirstOrDefault(c => c.Id == id);
+            if (client != null)
+            {
+                client.Name = name;
+                client.Speciality = speciality;
+                client.LevelOfMagic = levelOfMagic;
+                context.SaveChanges();
+            }
+        }
+    }
+
+    public static void DeleteClient(int id)
+    {
+        using (var context = new LibraryContext())
+        {
+            var client = context.Clients?.FirstOrDefault(c => c.Id == id);
+            if (client != null)
+            {
+                context.Clients?.Remove(client);
+                context.SaveChanges();
+            }
+        }
+    }
+
+
     public static void AddSmurf(string name, double height, SmurfDescription description)
     {
         using (var context = new LibraryContext())
