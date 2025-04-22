@@ -1,226 +1,256 @@
-using BLGargamelLibrary;
-using DALGargameLibrary;
+ï»¿using BLGargamelLibrary;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace GargmelWinForms
 {
     public partial class Form1 : Form
     {
-        MagicType? typeOfMagic;
+        private MagicType? typeOfMagic;
+        private Book? currentBook;
+        private bool isEditing = false;
 
         public Form1()
         {
             InitializeComponent();
             LoadMagicTypes();
-            ConfigureDataGridView();
-            ConfigureSpellBooksDataGridView();
-            ConfigureRecipeBooksDataGridView();
+            ConfigureDataGridViews();
+            SetupEventHandlers();
+
+            // Hide all DataGridViews initially
             ListBook.Visible = false;
-            // Masquer le deuxième DataGridView au démarrage
             dgvSpellBooks.Visible = false;
             dgvRecipeBooks.Visible = false;
-            btnShowSpellBooks.Click += button1_Click;
-            btnShowRecipeBooks.Click += btnShowRecipeBooks_Click;
-            btnReturn.Click += btnReturn_Click;
-            btnReturn.BringToFront();
-            btnBackToWelcome.BringToFront();
+
+            // Ensure grids can receive keyboard focus
+            ListBook.TabStop = true;
+            dgvSpellBooks.TabStop = true;
+            dgvRecipeBooks.TabStop = true;
         }
 
         private void LoadMagicTypes()
         {
-            // Remplir le ComboBox avec les valeurs de l'énumération MagicType
             cbMagicType.DataSource = Enum.GetValues(typeof(MagicType));
         }
-        private void bAdd_Click(object sender, EventArgs e)
-        {
-            // Vérification de la validité du numéro de série et du titre
-            if (int.TryParse(tbSerial.Text, out int serial) && !string.IsNullOrWhiteSpace(tbTitle.Text))
-            {
-                // Vérification de type de magie et nombre de recettes
-                int? numberOfRecipes = int.TryParse(tbNOR.Text, out int recipes) ? recipes : (int?)null;
 
-                if (typeOfMagic.HasValue || numberOfRecipes.HasValue)
+        private void ConfigureDataGridViews()
+        {
+            void ConfigureGrid(DataGridView grid)
+            {
+                grid.AutoGenerateColumns = false;
+                grid.Columns.Clear();
+                grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                grid.MultiSelect = false;
+
+                // Visual styling
+                grid.DefaultCellStyle.SelectionBackColor = Color.LightBlue;
+                grid.DefaultCellStyle.SelectionForeColor = Color.Black;
+                grid.RowHeadersDefaultCellStyle.SelectionBackColor = Color.LightBlue;
+
+                // Common columns
+                grid.Columns.Add(new DataGridViewTextBoxColumn
                 {
-                    // Ajout du livre dans la bibliothèque
-                    LibraryManager.AddBook(serial, tbTitle.Text, typeOfMagic, numberOfRecipes);
-                    MessageBox.Show("Livre ajouté avec succès !");
-                    // LoadBooks(); // Décommentez si vous souhaitez recharger les livres
-                }
-                else
+                    DataPropertyName = "Id",
+                    HeaderText = "ID",
+                    Name = "colId",
+                    Visible = false
+                });
+
+                grid.Columns.Add(new DataGridViewTextBoxColumn
                 {
-                    MessageBox.Show("Veuillez choisir un type de magie ou entrer un nombre de recettes.");
-                }
+                    DataPropertyName = "Serial",
+                    HeaderText = "Serial",
+                    Name = "colSerial"
+                });
+
+                grid.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "Title",
+                    HeaderText = "Title",
+                    Name = "colTitle"
+                });
             }
-            else
-            {
-                MessageBox.Show("Veuillez entrer un numéro de série valide et un titre.");
-            }
-        }
 
-        private void cbMagicType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Affecter la valeur sélectionnée pour typeOfMagic
-            typeOfMagic = cbMagicType.SelectedItem as MagicType?;
-        }
+            // Configure each grid
+            ConfigureGrid(ListBook);
+            ConfigureGrid(dgvSpellBooks);
+            ConfigureGrid(dgvRecipeBooks);
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Ce gestionnaire semble vide, à remplir si nécessaire.
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tbTitle_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-
-        }
-
-
-        private void ConfigureDataGridView()
-        {
-            // Ajouter des colonnes personnalisées
-            ListBook.AutoGenerateColumns = false; // Désactiver la génération automatique des colonnes
-            ListBook.Columns.Clear();
-
-            // Colonne pour le Serial
-            ListBook.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "Serial",
-                HeaderText = "Serial",
-                Name = "colSerial"
-            });
-
-            // Colonne pour le Title
-            ListBook.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "Title",
-                HeaderText = "Title",
-                Name = "colTitle"
-            });
-
-        }
-        private void ConfigureSpellBooksDataGridView()
-        {
-            // Désactiver la génération automatique des colonnes
-            dgvSpellBooks.AutoGenerateColumns = false;
-
-            // Effacer toutes les colonnes existantes
-            dgvSpellBooks.Columns.Clear();
-
-            // Colonne pour le Title
-            dgvSpellBooks.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "Title",
-                HeaderText = "Title",
-                Name = "colTitle"
-            });
-
-            // Colonne pour le Magic Type
+            // Type-specific columns
             dgvSpellBooks.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "TypeOfMagic",
                 HeaderText = "Magic Type",
                 Name = "colMagicType"
             });
-        }
-        private void ConfigureRecipeBooksDataGridView()
-        {
-            // Désactiver la génération automatique des colonnes
-            dgvRecipeBooks.AutoGenerateColumns = false;
 
-            // Effacer toutes les colonnes existantes
-            dgvRecipeBooks.Columns.Clear();
-
-            // Colonne pour le Title
-            dgvRecipeBooks.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "Title",
-                HeaderText = "Title",
-                Name = "colTitle"
-            });
-
-            // Colonne pour le NumberOfRecipes
             dgvRecipeBooks.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "NumberOfRecipes",
-                HeaderText = "Number of Recipes",
-                Name = "colNumberOfRecipes"
+                HeaderText = "Recipes",
+                Name = "colRecipes"
             });
         }
 
-        private void bDisplay_Click(object sender, EventArgs e)
+        private void SetupEventHandlers()
         {
-            // Récupérer tous les livres (SpellBooks et RecipeBooks)
-            var books = LibraryManager.GetAllBooks();
-            // Afficher les livres dans le DataGridView
-            ListBook.DataSource = books;
+            // Display buttons
+            btnShowSpellBooks.Click += (s, e) => ShowBooks(LibraryManager.GetAllSpellBooks(), dgvSpellBooks);
+            btnShowRecipeBooks.Click += (s, e) => ShowBooks(LibraryManager.GetAllRecipeBooks(), dgvRecipeBooks);
+            bDisplay.Click += (s, e) => ShowBooks(LibraryManager.GetAllBooks(), ListBook);
 
-            // Afficher le DataGridView
-            ListBook.Visible = true;
+            // Navigation buttons
+            btnReturn.Click += (s, e) => ShowMainForm();
+            btnBackToWelcome.Click += (s, e) => { new WelcomeForm().Show(); this.Close(); };
+
+            // Book operations
+            bAdd.Click += AddOrUpdateBook;
+            cbMagicType.SelectedIndexChanged += (s, e) => typeOfMagic = cbMagicType.SelectedItem as MagicType?;
+
+            // Edit on double-click
+            ListBook.CellDoubleClick += (s, e) => LoadBookForEditing(ListBook);
+            dgvSpellBooks.CellDoubleClick += (s, e) => LoadBookForEditing(dgvSpellBooks);
+            dgvRecipeBooks.CellDoubleClick += (s, e) => LoadBookForEditing(dgvRecipeBooks);
+
+            // Delete key handling
+            ListBook.KeyDown += HandleDeleteKey;
+            dgvSpellBooks.KeyDown += HandleDeleteKey;
+            dgvRecipeBooks.KeyDown += HandleDeleteKey;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void HandleDeleteKey(object sender, KeyEventArgs e)
         {
-            // Récupérer tous les SpellBooks
-            var spellBooks = LibraryManager.GetAllSpellBooks();
-
-            // Afficher les SpellBooks dans le deuxième DataGridView
-            dgvSpellBooks.DataSource = spellBooks;
-
-            // Afficher le deuxième DataGridView
-            dgvSpellBooks.Visible = true;
+            if (e.KeyCode == Keys.Delete)
+            {
+                var grid = sender as DataGridView;
+                if (grid?.SelectedRows.Count > 0)
+                {
+                    var book = (Book)grid.SelectedRows[0].DataBoundItem;
+                    if (MessageBox.Show($"Delete '{book.Title}'?", "Confirm Delete",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            LibraryManager.DeleteBook(book.Id);
+                            RefreshActiveGrid();
+                            MessageBox.Show("Book deleted successfully.");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error deleting book: {ex.Message}");
+                        }
+                    }
+                }
+            }
         }
 
-        private void dgvSpellBooks_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void LoadBookForEditing(DataGridView grid)
         {
+            if (grid.SelectedRows.Count == 0) return;
 
+            var book = (Book)grid.SelectedRows[0].DataBoundItem;
+            currentBook = book;
+            isEditing = true;
 
+            tbSerial.Text = book.Serial.ToString();
+            tbTitle.Text = book.Title;
+
+            if (book is SpellBook spellBook)
+            {
+                comboBox1.SelectedItem = "SpellBook";
+                cbMagicType.SelectedItem = spellBook.TypeOfMagic;
+                tbNOR.Text = "";
+            }
+            else if (book is RecipeBook recipeBook)
+            {
+                comboBox1.SelectedItem = "RecipeBook";
+                tbNOR.Text = recipeBook.NumberOfRecipes.ToString();
+                cbMagicType.SelectedItem = MagicType.None;
+            }
+
+            bAdd.Text = "Update Book";
+            ShowMainForm();
         }
 
-        private void btnShowRecipeBooks_Click(object sender, EventArgs e)
+        private void AddOrUpdateBook(object sender, EventArgs e)
         {
-            // Récupérer tous les RecipeBooks
-            var recipeBooks = LibraryManager.GetAllRecipeBooks();
+            if (!int.TryParse(tbSerial.Text, out int serial) || string.IsNullOrWhiteSpace(tbTitle.Text))
+            {
+                MessageBox.Show("Please enter valid serial and title.");
+                return;
+            }
 
-            // Afficher les RecipeBooks dans le deuxième DataGridView
-            dgvRecipeBooks.DataSource = recipeBooks;
+            int? recipes = int.TryParse(tbNOR.Text, out int r) ? r : (int?)null;
 
-            // Afficher le deuxième DataGridView
-            dgvRecipeBooks.Visible = true;
+            try
+            {
+                if (isEditing && currentBook != null)
+                {
+                    LibraryManager.UpdateBook(currentBook.Id, serial, tbTitle.Text, typeOfMagic, recipes);
+                    MessageBox.Show("Book updated!");
+
+                    // Show the appropriate grid after update
+                    if (currentBook is SpellBook)
+                        ShowBooks(LibraryManager.GetAllSpellBooks(), dgvSpellBooks);
+                    else if (currentBook is RecipeBook)
+                        ShowBooks(LibraryManager.GetAllRecipeBooks(), dgvRecipeBooks);
+                }
+                else
+                {
+                    LibraryManager.AddBook(serial, tbTitle.Text, typeOfMagic, recipes);
+                    MessageBox.Show("Book added!");
+                    ShowBooks(LibraryManager.GetAllBooks(), ListBook);
+                }
+
+                ResetForm();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
         }
 
-        private void dgvRecipeBooks_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void ShowBooks<T>(List<T> books, DataGridView grid) where T : Book
         {
-
+            grid.DataSource = books;
+            ShowBooksGrid(grid);
         }
 
-        private void btnReturn_Click(object sender, EventArgs e)
+        private void ShowBooksGrid(DataGridView grid)
         {
-            // Masquer le DataGridView
+            ListBook.Visible = grid == ListBook;
+            dgvSpellBooks.Visible = grid == dgvSpellBooks;
+            dgvRecipeBooks.Visible = grid == dgvRecipeBooks;
+        }
+
+        private void ShowMainForm()
+        {
             ListBook.Visible = false;
-            dgvRecipeBooks.Visible = false;
             dgvSpellBooks.Visible = false;
-
-            // Afficher à nouveau le formulaire principal
-
+            dgvRecipeBooks.Visible = false;
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void RefreshActiveGrid()
         {
-            WelcomeForm welcomeForm = new WelcomeForm();
-            welcomeForm.Show();
+            if (ListBook.Visible)
+                ListBook.DataSource = LibraryManager.GetAllBooks();
+            else if (dgvSpellBooks.Visible)
+                dgvSpellBooks.DataSource = LibraryManager.GetAllSpellBooks();
+            else if (dgvRecipeBooks.Visible)
+                dgvRecipeBooks.DataSource = LibraryManager.GetAllRecipeBooks();
+        }
 
-            // Fermer Form1
-            this.Close();
-
+        private void ResetForm()
+        {
+            currentBook = null;
+            isEditing = false;
+            tbSerial.Text = "";
+            tbTitle.Text = "";
+            tbNOR.Text = "";
+            cbMagicType.SelectedItem = MagicType.None;
+            comboBox1.SelectedIndex = -1;
+            bAdd.Text = "Add Book";
         }
     }
 }

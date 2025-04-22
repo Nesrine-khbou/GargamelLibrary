@@ -77,6 +77,83 @@ public static class LibraryManager
     }
 
 
+
+    public static void UpdateBook(int id, int serial, string title, MagicType? typeOfMagic, int? numberOfRecipes)
+    {
+        using (var context = new LibraryContext())
+        {
+            // Check if it's a SpellBook
+            var spellBook = context.SpellBooks?.FirstOrDefault(b => b.Id == id);
+            if (spellBook != null)
+            {
+                spellBook.Serial = serial;
+                spellBook.Title = title;
+                if (typeOfMagic.HasValue)
+                {
+                    spellBook.TypeOfMagic = typeOfMagic.Value;
+                }
+                context.SaveChanges();
+                return;
+            }
+
+            // Check if it's a RecipeBook
+            var recipeBook = context.RecipeBooks?.FirstOrDefault(b => b.Id == id);
+            if (recipeBook != null)
+            {
+                recipeBook.Serial = serial;
+                recipeBook.Title = title;
+                if (numberOfRecipes.HasValue)
+                {
+                    recipeBook.NumberOfRecipes = numberOfRecipes.Value;
+                }
+                context.SaveChanges();
+                return;
+            }
+
+            throw new ArgumentException("Book not found");
+        }
+    }
+
+    public static void DeleteBook(int id)
+    {
+        using (var context = new LibraryContext())
+        {
+            // Try to find and delete as SpellBook
+            var spellBook = context.SpellBooks?.FirstOrDefault(b => b.Id == id);
+            if (spellBook != null)
+            {
+                context.SpellBooks?.Remove(spellBook);
+                context.SaveChanges();
+                return;
+            }
+
+            // Try to find and delete as RecipeBook
+            var recipeBook = context.RecipeBooks?.FirstOrDefault(b => b.Id == id);
+            if (recipeBook != null)
+            {
+                context.RecipeBooks?.Remove(recipeBook);
+                context.SaveChanges();
+                return;
+            }
+
+            throw new ArgumentException("Book not found");
+        }
+    }
+
+    public static Book? GetBookById(int id)
+    {
+        using (var context = new LibraryContext())
+        {
+            // Check SpellBooks first
+            var spellBook = context.SpellBooks?.FirstOrDefault(b => b.Id == id);
+            if (spellBook != null) return spellBook;
+
+            // Check RecipeBooks if not found in SpellBooks
+            return context.RecipeBooks?.FirstOrDefault(b => b.Id == id);
+        }
+    }
+
+
     // Ajoute un client dans la base de données
     public static void AddClient(string name, Speciality speciality, LevelOfMagic levelOfMagic)
     {
