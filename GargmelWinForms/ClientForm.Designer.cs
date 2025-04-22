@@ -34,24 +34,24 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewClients).BeginInit();
             SuspendLayout();
 
-            // Label1 - Positioned below DataGridView
+            // Label1 - Moved to top
             label1.AutoSize = true;
-            label1.Location = new Point(46, 430);
+            label1.Location = new Point(46, 50);
             label1.Name = "label1";
             label1.Size = new Size(49, 20);
             label1.TabIndex = 0;
             label1.Text = "Name";
 
-            // Label2
+            // Label2 - Moved to top
             label2.AutoSize = true;
-            label2.Location = new Point(46, 470);
+            label2.Location = new Point(46, 90);
             label2.Name = "label2";
             label2.Size = new Size(73, 20);
             label2.TabIndex = 1;
             label2.Text = "Speciality";
 
-            // Button1 (Add)
-            button1.Location = new Point(421, 450);
+            // Button1 (Add) - Moved to top
+            button1.Location = new Point(421, 70);
             button1.Name = "button1";
             button1.Size = new Size(94, 29);
             button1.TabIndex = 2;
@@ -59,8 +59,8 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
 
-            // Button2 (Display)
-            button2.Location = new Point(421, 490);
+            // Button2 (Display) - Moved to top
+            button2.Location = new Point(421, 110);
             button2.Name = "button2";
             button2.Size = new Size(94, 29);
             button2.TabIndex = 3;
@@ -68,42 +68,41 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
 
-            // Label3
+            // Label3 - Moved to top
             label3.AutoSize = true;
-            label3.Location = new Point(46, 510);
+            label3.Location = new Point(46, 130);
             label3.Name = "label3";
             label3.Size = new Size(108, 20);
             label3.TabIndex = 4;
             label3.Text = "Level Of Magic";
             label3.Click += label3_Click;
 
-            // ComboBox1 (Speciality)
+            // ComboBox1 (Speciality) - Moved to top
             comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(173, 467);
+            comboBox1.Location = new Point(173, 87);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(151, 28);
             comboBox1.TabIndex = 5;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
 
-            // ComboBox2 (LevelOfMagic)
+            // ComboBox2 (LevelOfMagic) - Moved to top
             comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(173, 507);
+            comboBox2.Location = new Point(173, 127);
             comboBox2.Name = "comboBox2";
             comboBox2.Size = new Size(151, 28);
             comboBox2.TabIndex = 6;
             comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
 
-            // TextBox1 (Name)
-            textBox1.Location = new Point(173, 427);
+            // TextBox1 (Name) - Moved to top
+            textBox1.Location = new Point(173, 47);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(151, 27);
             textBox1.TabIndex = 7;
             textBox1.TextChanged += textBox1_TextChanged;
 
-            // DataGridView - Docked to top with specific height
+            // DataGridView - Moved to bottom with specific height and position
             dataGridViewClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewClients.Dock = DockStyle.Top;
-            dataGridViewClients.Location = new Point(0, 0);
+            dataGridViewClients.Location = new Point(0, 180);
             dataGridViewClients.Name = "dataGridViewClients";
             dataGridViewClients.RowHeadersWidth = 51;
             dataGridViewClients.Size = new Size(800, 400);
@@ -111,7 +110,7 @@
             dataGridViewClients.CellContentClick += dataGridViewClients_CellContentClick;
             dataGridViewClients.Visible = false;
 
-            // Button3 (Return)
+            // Button3 (Return) - Adjusted position
             button3.Location = new Point(677, 580);
             button3.Name = "button3";
             button3.Size = new Size(94, 29);
@@ -120,7 +119,7 @@
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
 
-            // Button4 (Back)
+            // Button4 (Back) - Moved to top
             button4.Location = new Point(12, 12);
             button4.Name = "button4";
             button4.Size = new Size(36, 29);
@@ -129,8 +128,8 @@
             button4.UseVisualStyleBackColor = true;
             button4.Click += button4_Click;
 
-            // Button5 (Edit Selected)
-            button5.Location = new Point(550, 420);
+            // Button5 (Edit Selected) - Moved to top
+            button5.Location = new Point(550, 40);
             button5.Name = "button5";
             button5.Size = new Size(120, 29);
             button5.TabIndex = 11;
@@ -139,8 +138,8 @@
             button5.Click += button5_Click;
             button5.Visible = false;
 
-            // Button6 (Delete Selected)
-            button6.Location = new Point(550, 460);
+            // Button6 (Delete Selected) - Moved to top
+            button6.Location = new Point(550, 80);
             button6.Name = "button6";
             button6.Size = new Size(120, 29);
             button6.TabIndex = 12;
@@ -149,8 +148,8 @@
             button6.Click += button6_Click;
             button6.Visible = false;
 
-            // Button7 (Save Changes)
-            button7.Location = new Point(550, 500);
+            // Button7 (Save Changes) - Moved to top
+            button7.Location = new Point(550, 120);
             button7.Name = "button7";
             button7.Size = new Size(120, 29);
             button7.TabIndex = 13;
@@ -176,7 +175,7 @@
             Controls.Add(button1);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(dataGridViewClients); // DataGridView added last so it's at the top
+            Controls.Add(dataGridViewClients);
             Name = "ClientForm";
             Text = "ClientForm";
             Load += ClientForm_Load;
