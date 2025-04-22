@@ -54,12 +54,8 @@ namespace GargmelWinForms
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Form2 IngredientForm = new Form2();
-
-            // Afficher IngredientForm
-            IngredientForm.Show();
-
-            // Masquer WelcomeForm
+            IngredientsForm ingredientForm = new IngredientsForm();
+            ingredientForm.Show();
             this.Hide();
         }
     }
