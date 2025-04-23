@@ -216,7 +216,7 @@
             // 
             this.btnShowSpellBooks.Location = new System.Drawing.Point(652, 72);
             this.btnShowSpellBooks.Name = "btnShowSpellBooks";
-            this.btnShowSpellBooks.Size = new System.Drawing.Size(94, 51);
+            this.btnShowSpellBooks.Size = new System.Drawing.Size(180, 45);
             this.btnShowSpellBooks.TabIndex = 14;
             this.btnShowSpellBooks.Text = "Display SpellBook";
             this.btnShowSpellBooks.UseVisualStyleBackColor = true;
@@ -225,7 +225,7 @@
             // 
             this.btnShowRecipeBooks.Location = new System.Drawing.Point(652, 193);
             this.btnShowRecipeBooks.Name = "btnShowRecipeBooks";
-            this.btnShowRecipeBooks.Size = new System.Drawing.Size(99, 53);
+            this.btnShowRecipeBooks.Size = new System.Drawing.Size(180, 45);
             this.btnShowRecipeBooks.TabIndex = 15;
             this.btnShowRecipeBooks.Text = "Display RecipeBook";
             this.btnShowRecipeBooks.UseVisualStyleBackColor = true;
