@@ -20,6 +20,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		book5.jpg = book5.jpg
 		book6.jpg = book6.jpg
 		book7.jpg = book7.jpg
+		book8.jpg = book8.jpg
+		client.jpg = client.jpg
+		client2.jpg = client2.jpg
+		client3.jpg = client3.jpg
+		client4.jpg = client4.jpg
+		ingredient1.jpg = ingredient1.jpg
+		ingredient3.jpg = ingredient3.jpg
+		ingredient5.jpg = ingredient5.jpg
+		ingredient6.jpg = ingredient6.jpg
+		ingredient7.jpg = ingredient7.jpg
+		smurfs1.jpg = smurfs1.jpg
+		smurfs2.png = smurfs2.png
+		smurfs3.png = smurfs3.png
+		smurfs4.png = smurfs4.png
+		smurfs5.png = smurfs5.png
+		smurfs6.png = smurfs6.png
+		smurfs7.png = smurfs7.png
+		smurfs8.png = smurfs8.png
+		smurfs9.png = smurfs9.png
 	EndProjectSection
 EndProject
 Global

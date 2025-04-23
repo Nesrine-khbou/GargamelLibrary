@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using BLGargamelLibrary;
-using DALGargameLibrary;
 
 namespace GargmelWinForms
 {
@@ -15,18 +11,224 @@ namespace GargmelWinForms
         private Client _selectedClient = null;
         private bool _isEditing = false;
         private List<Client> _clients = new List<Client>();
+        private Image _backgroundImage;
 
         public ClientForm()
         {
             InitializeComponent();
+            this.Size = new Size(1000, 700);
+            this.MinimumSize = new Size(1000, 700);
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            LoadBackgroundImage();
+            ApplySpookyTheme();
             comboBox1.DataSource = Enum.GetValues(typeof(Speciality));
             comboBox2.DataSource = Enum.GetValues(typeof(LevelOfMagic));
             ConfigureDataGridView();
             dataGridViewClients.Visible = false;
-            button3.BringToFront();
-            button5.Visible = false;
-            button6.Visible = false;
-            button7.Visible = false;
+            btnReturn.BringToFront();
+            btnEditSelected.Visible = false;
+            btnDeleteSelected.Visible = false;
+            btnSaveChanges.Visible = false;
+        }
+
+        private void LoadBackgroundImage()
+        {
+            try
+            {
+                _backgroundImage = Image.FromFile(@"E:\neeeeesss\2eme ing\2eme_semestre\net\GargamelLibrary1\GargamelLibrary1\client4.jpg");
+                this.BackgroundImage = _backgroundImage;
+                this.BackgroundImageLayout = ImageLayout.Stretch;
+                this.DoubleBuffered = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load background image: {ex.Message}\nUsing fallback color.",
+                    "Image Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.BackColor = Color.FromArgb(30, 10, 30);
+            }
+        }
+
+        private void ApplySpookyTheme()
+        {
+            // Main form styling
+            this.ForeColor = Color.GhostWhite;
+            this.Font = new Font("Lucida Handwriting", 10, FontStyle.Bold);
+
+            // Control positioning
+            lblName.Location = new Point(50, 100);
+            txtName.Location = new Point(200, 100);
+            txtName.Size = new Size(200, 30);
+
+            lblSpeciality.Location = new Point(50, 150);
+            comboBox1.Location = new Point(200, 150);
+            comboBox1.Size = new Size(200, 30);
+
+            lblLevel.Location = new Point(50, 200);
+            comboBox2.Location = new Point(200, 200);
+            comboBox2.Size = new Size(200, 30);
+
+            btnAdd.Location = new Point(450, 100);
+            btnAdd.Size = new Size(150, 40);
+
+            btnDisplay.Location = new Point(450, 150);
+            btnDisplay.Size = new Size(150, 40);
+
+            btnEditSelected.Location = new Point(650, 100);
+            btnEditSelected.Size = new Size(200, 40);
+
+            btnDeleteSelected.Location = new Point(650, 150);
+            btnDeleteSelected.Size = new Size(200, 40);
+
+            btnSaveChanges.Location = new Point(650, 200);
+            btnSaveChanges.Size = new Size(200, 40);
+
+            btnReturn.Location = new Point(50, 600);
+            btnReturn.Size = new Size(150, 40);
+
+            btnBack.Location = new Point(20, 20);
+            btnBack.Size = new Size(40, 40);
+
+            // DataGridView styling
+            dataGridViewClients.EnableHeadersVisualStyles = false;
+            dataGridViewClients.BackgroundColor = Color.FromArgb(40, 10, 40);
+            dataGridViewClients.BorderStyle = BorderStyle.None;
+            dataGridViewClients.GridColor = Color.FromArgb(70, 30, 70);
+            dataGridViewClients.DefaultCellStyle.BackColor = Color.FromArgb(50, 20, 50);
+            dataGridViewClients.DefaultCellStyle.ForeColor = Color.AntiqueWhite;
+            dataGridViewClients.DefaultCellStyle.Font = new Font("Lucida Handwriting", 10);
+            dataGridViewClients.DefaultCellStyle.SelectionBackColor = Color.FromArgb(90, 40, 90);
+            dataGridViewClients.DefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridViewClients.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewClients.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(60, 30, 60);
+            dataGridViewClients.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(60, 20, 60);
+            dataGridViewClients.ColumnHeadersDefaultCellStyle.ForeColor = Color.AntiqueWhite;
+            dataGridViewClients.ColumnHeadersDefaultCellStyle.Font = new Font("Lucida Handwriting", 10, FontStyle.Bold);
+            dataGridViewClients.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewClients.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(60, 20, 60);
+            dataGridViewClients.RowHeadersDefaultCellStyle.ForeColor = Color.AntiqueWhite;
+            dataGridViewClients.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewClients.AllowUserToResizeRows = false;
+            dataGridViewClients.RowTemplate.Height = 30;
+            dataGridViewClients.Location = new Point((this.ClientSize.Width - 900) / 2, 250);
+            dataGridViewClients.Size = new Size(900, 400);
+
+            // Label styling
+            var labels = new[] { lblName, lblSpeciality, lblLevel };
+            foreach (var label in labels)
+            {
+                label.ForeColor = Color.AntiqueWhite;
+                label.Font = new Font("Lucida Handwriting", 10, FontStyle.Bold);
+                label.BackColor = Color.Transparent;
+            }
+
+            // TextBox and ComboBox styling
+            var textBoxes = new[] { txtName };
+            foreach (var textBox in textBoxes)
+            {
+                textBox.BackColor = Color.FromArgb(70, 20, 70);
+                textBox.ForeColor = Color.AntiqueWhite;
+                textBox.BorderStyle = BorderStyle.FixedSingle;
+                textBox.Font = new Font("Lucida Handwriting", 10, FontStyle.Bold);
+            }
+
+            var comboBoxes = new[] { comboBox1, comboBox2 };
+            foreach (var comboBox in comboBoxes)
+            {
+                comboBox.BackColor = Color.FromArgb(70, 20, 70);
+                comboBox.ForeColor = Color.AntiqueWhite;
+                comboBox.FlatStyle = FlatStyle.Flat;
+                comboBox.Font = new Font("Lucida Handwriting", 10, FontStyle.Bold);
+            }
+
+            // Button styling
+            var buttons = new[] { btnAdd, btnDisplay, btnEditSelected, btnDeleteSelected, btnSaveChanges, btnReturn, btnBack };
+            foreach (var button in buttons)
+            {
+                button.BackColor = Color.FromArgb(120, 70, 20, 70);
+                button.ForeColor = Color.AntiqueWhite;
+                button.FlatStyle = FlatStyle.Flat;
+                button.FlatAppearance.BorderColor = Color.Black;
+                button.FlatAppearance.BorderSize = 2;
+                button.Font = new Font("Lucida Handwriting", 10, FontStyle.Bold);
+
+                button.MouseEnter += (sender, e) =>
+                {
+                    button.BackColor = Color.FromArgb(150, 90, 30, 90);
+                    button.ForeColor = Color.White;
+                    button.Cursor = Cursors.Hand;
+                };
+
+                button.MouseLeave += (sender, e) =>
+                {
+                    button.BackColor = Color.FromArgb(120, 70, 20, 70);
+                    button.ForeColor = Color.AntiqueWhite;
+                };
+            }
+
+            // Special styling for back button
+            btnBack.Font = new Font("Lucida Handwriting", 10, FontStyle.Bold);
+            btnBack.Text = "←";
+        }
+
+        private DialogResult ShowStyledMessage(string message, string title = "Message")
+        {
+            Form messageForm = new Form()
+            {
+                Width = 400,
+                Height = 150,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterParent,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                Text = title,
+                BackColor = Color.FromArgb(50, 20, 50),
+                ForeColor = Color.AntiqueWhite
+            };
+
+            Label messageLabel = new Label()
+            {
+                Text = message,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Lucida Handwriting", 12, FontStyle.Bold)
+            };
+
+            Button okButton = new Button()
+            {
+                Text = "OK",
+                DialogResult = DialogResult.OK,
+                Dock = DockStyle.Bottom,
+                Height = 40,
+                BackColor = Color.FromArgb(70, 30, 70),
+                ForeColor = Color.AntiqueWhite,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Lucida Handwriting", 10)
+            };
+
+            okButton.FlatAppearance.BorderColor = Color.FromArgb(100, 50, 100);
+
+            messageForm.Controls.Add(messageLabel);
+            messageForm.Controls.Add(okButton);
+
+            return messageForm.ShowDialog();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            if (_backgroundImage == null)
+            {
+                using (Pen borderPen = new Pen(Color.FromArgb(70, 20, 70), 3))
+                {
+                    e.Graphics.DrawRectangle(borderPen, 5, 5, this.Width - 10, this.Height - 10);
+                }
+            }
+            else
+            {
+                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(200, 30, 10, 30)), this.ClientRectangle);
+            }
         }
 
         private void ConfigureDataGridView()
@@ -42,32 +244,33 @@ namespace GargmelWinForms
                 DataPropertyName = "Id",
                 HeaderText = "ID",
                 Name = "colId",
-                ReadOnly = true
+                Visible = false
             });
             dataGridViewClients.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Name",
                 HeaderText = "Name",
                 Name = "colName",
-                ReadOnly = true
+                Width = 250
             });
             dataGridViewClients.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Speciality",
                 HeaderText = "Speciality",
                 Name = "colSpeciality",
-                ReadOnly = true
+                Width = 250
             });
             dataGridViewClients.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "LevelOfMagic",
                 HeaderText = "Level of Magic",
                 Name = "colLevelOfMagic",
-                ReadOnly = true
+                Width = 250
             });
 
             dataGridViewClients.SelectionChanged += DataGridViewClients_SelectionChanged;
             dataGridViewClients.DataBindingComplete += DataGridViewClients_DataBindingComplete;
+            dataGridViewClients.KeyDown += HandleDeleteKey;
         }
 
         private void DataGridViewClients_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -90,22 +293,108 @@ namespace GargmelWinForms
             if (dataGridViewClients.SelectedRows.Count > 0)
             {
                 _selectedClient = dataGridViewClients.SelectedRows[0].DataBoundItem as Client;
-                button5.Visible = true;
-                button6.Visible = true;
+                btnEditSelected.Visible = true;
+                btnDeleteSelected.Visible = true;
             }
             else
             {
                 _selectedClient = null;
-                button5.Visible = false;
-                button6.Visible = false;
+                btnEditSelected.Visible = false;
+                btnDeleteSelected.Visible = false;
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void HandleDeleteKey(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                var grid = sender as DataGridView;
+                if (grid?.SelectedRows.Count > 0)
+                {
+                    var client = (Client)grid.SelectedRows[0].DataBoundItem;
+
+                    Form confirmForm = new Form()
+                    {
+                        Width = 400,
+                        Height = 150,
+                        FormBorderStyle = FormBorderStyle.FixedDialog,
+                        StartPosition = FormStartPosition.CenterParent,
+                        MaximizeBox = false,
+                        MinimizeBox = false,
+                        Text = "Confirm Delete",
+                        BackColor = Color.FromArgb(50, 20, 50),
+                        ForeColor = Color.AntiqueWhite
+                    };
+
+                    Label messageLabel = new Label()
+                    {
+                        Text = $"Delete '{client.Name}'?",
+                        Dock = DockStyle.Fill,
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Font = new Font("Lucida Handwriting", 12, FontStyle.Bold)
+                    };
+
+                    FlowLayoutPanel buttonPanel = new FlowLayoutPanel()
+                    {
+                        Dock = DockStyle.Bottom,
+                        Height = 40,
+                        FlowDirection = FlowDirection.RightToLeft,
+                        Padding = new Padding(5)
+                    };
+
+                    Button noButton = new Button()
+                    {
+                        Text = "No",
+                        DialogResult = DialogResult.No,
+                        Width = 80,
+                        BackColor = Color.FromArgb(70, 30, 70),
+                        ForeColor = Color.AntiqueWhite,
+                        FlatStyle = FlatStyle.Flat,
+                        Font = new Font("Lucida Handwriting", 10)
+                    };
+
+                    Button yesButton = new Button()
+                    {
+                        Text = "Yes",
+                        DialogResult = DialogResult.Yes,
+                        Width = 80,
+                        BackColor = Color.FromArgb(70, 30, 70),
+                        ForeColor = Color.AntiqueWhite,
+                        FlatStyle = FlatStyle.Flat,
+                        Font = new Font("Lucida Handwriting", 10)
+                    };
+
+                    yesButton.FlatAppearance.BorderColor = Color.FromArgb(100, 50, 100);
+                    noButton.FlatAppearance.BorderColor = Color.FromArgb(100, 50, 100);
+
+                    buttonPanel.Controls.Add(yesButton);
+                    buttonPanel.Controls.Add(noButton);
+
+                    confirmForm.Controls.Add(messageLabel);
+                    confirmForm.Controls.Add(buttonPanel);
+
+                    if (confirmForm.ShowDialog() == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            LibraryManager.DeleteClient(client.Id);
+                            ShowStyledMessage("Client deleted successfully.", "Success");
+                            DisplayClients();
+                        }
+                        catch (Exception ex)
+                        {
+                            ShowStyledMessage($"Error deleting client: {ex.Message}", "Error");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
         {
             if (_isEditing)
             {
-                MessageBox.Show("Please finish editing the current client before adding a new one.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowStyledMessage("Please finish editing the current client before adding a new one.", "Information");
                 return;
             }
             AddClient();
@@ -113,20 +402,20 @@ namespace GargmelWinForms
 
         private void AddClient()
         {
-            string name = textBox1.Text;
+            string name = txtName.Text;
             Speciality speciality = (Speciality)comboBox1.SelectedItem;
             LevelOfMagic levelOfMagic = (LevelOfMagic)comboBox2.SelectedItem;
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                MessageBox.Show("Please enter a valid name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowStyledMessage("Please enter a valid name.", "Error");
                 return;
             }
 
             try
             {
                 LibraryManager.AddClient(name, speciality, levelOfMagic);
-                MessageBox.Show("Client added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowStyledMessage("Client added successfully!", "Success");
                 ClearForm();
 
                 if (dataGridViewClients.Visible)
@@ -136,16 +425,16 @@ namespace GargmelWinForms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowStyledMessage($"An error occurred: {ex.Message}", "Error");
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnDisplay_Click(object sender, EventArgs e)
         {
             dataGridViewClients.Visible = true;
-            button5.Visible = false;
-            button6.Visible = false;
-            button7.Visible = false;
+            btnEditSelected.Visible = false;
+            btnDeleteSelected.Visible = false;
+            btnSaveChanges.Visible = false;
             DisplayClients();
         }
 
@@ -159,76 +448,126 @@ namespace GargmelWinForms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred while loading clients: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowStyledMessage($"An error occurred while loading clients: {ex.Message}", "Error");
             }
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void btnEditSelected_Click(object sender, EventArgs e)
         {
             if (_selectedClient == null)
             {
-                MessageBox.Show("Please select a client to edit.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowStyledMessage("Please select a client to edit.", "Information");
                 return;
             }
 
             _isEditing = true;
-            textBox1.Text = _selectedClient.Name;
+            txtName.Text = _selectedClient.Name;
             comboBox1.SelectedItem = _selectedClient.Speciality;
             comboBox2.SelectedItem = _selectedClient.LevelOfMagic;
 
-            button1.Enabled = false;
-            button5.Visible = false;
-            button6.Visible = false;
-            button7.Visible = true;
-
-            // Ensure form controls are visible
-            textBox1.BringToFront();
-            comboBox1.BringToFront();
-            comboBox2.BringToFront();
-            label1.BringToFront();
-            label2.BringToFront();
-            label3.BringToFront();
+            btnAdd.Enabled = false;
+            btnEditSelected.Visible = false;
+            btnDeleteSelected.Visible = false;
+            btnSaveChanges.Visible = true;
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void btnDeleteSelected_Click(object sender, EventArgs e)
         {
             if (_selectedClient == null) return;
 
-            var result = MessageBox.Show($"Are you sure you want to delete {_selectedClient.Name}?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            Form confirmForm = new Form()
+            {
+                Width = 400,
+                Height = 150,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterParent,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                Text = "Confirm Delete",
+                BackColor = Color.FromArgb(50, 20, 50),
+                ForeColor = Color.AntiqueWhite
+            };
 
-            if (result == DialogResult.Yes)
+            Label messageLabel = new Label()
+            {
+                Text = $"Delete '{_selectedClient.Name}'?",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Lucida Handwriting", 12, FontStyle.Bold)
+            };
+
+            FlowLayoutPanel buttonPanel = new FlowLayoutPanel()
+            {
+                Dock = DockStyle.Bottom,
+                Height = 40,
+                FlowDirection = FlowDirection.RightToLeft,
+                Padding = new Padding(5)
+            };
+
+            Button noButton = new Button()
+            {
+                Text = "No",
+                DialogResult = DialogResult.No,
+                Width = 80,
+                BackColor = Color.FromArgb(70, 30, 70),
+                ForeColor = Color.AntiqueWhite,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Lucida Handwriting", 10)
+            };
+
+            Button yesButton = new Button()
+            {
+                Text = "Yes",
+                DialogResult = DialogResult.Yes,
+                Width = 80,
+                BackColor = Color.FromArgb(70, 30, 70),
+                ForeColor = Color.AntiqueWhite,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Lucida Handwriting", 10)
+            };
+
+            yesButton.FlatAppearance.BorderColor = Color.FromArgb(100, 50, 100);
+            noButton.FlatAppearance.BorderColor = Color.FromArgb(100, 50, 100);
+
+            buttonPanel.Controls.Add(yesButton);
+            buttonPanel.Controls.Add(noButton);
+
+            confirmForm.Controls.Add(messageLabel);
+            confirmForm.Controls.Add(buttonPanel);
+
+            if (confirmForm.ShowDialog() == DialogResult.Yes)
             {
                 try
                 {
                     LibraryManager.DeleteClient(_selectedClient.Id);
-                    MessageBox.Show("Client deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ShowStyledMessage("Client deleted successfully.", "Success");
                     DisplayClients();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error deleting client: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowStyledMessage($"Error deleting client: {ex.Message}", "Error");
                 }
             }
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void btnSaveChanges_Click(object sender, EventArgs e)
         {
             if (_selectedClient == null) return;
 
-            string name = textBox1.Text;
+            string name = txtName.Text;
             Speciality speciality = (Speciality)comboBox1.SelectedItem;
             LevelOfMagic levelOfMagic = (LevelOfMagic)comboBox2.SelectedItem;
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                MessageBox.Show("Please enter a valid name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowStyledMessage("Please enter a valid name.", "Error");
                 return;
             }
 
             try
             {
                 LibraryManager.UpdateClient(_selectedClient.Id, name, speciality, levelOfMagic);
-                MessageBox.Show("Client updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowStyledMessage("Client updated successfully!", "Success");
 
                 ClearForm();
                 DisplayClients();
@@ -236,13 +575,13 @@ namespace GargmelWinForms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowStyledMessage($"An error occurred: {ex.Message}", "Error");
             }
         }
 
         private void ClearForm()
         {
-            textBox1.Clear();
+            txtName.Clear();
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
         }
@@ -251,30 +590,28 @@ namespace GargmelWinForms
         {
             _isEditing = false;
             _selectedClient = null;
-            button1.Enabled = true;
-            button7.Visible = false;
+            btnAdd.Enabled = true;
+            btnSaveChanges.Visible = false;
             ClearForm();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btnReturn_Click(object sender, EventArgs e)
         {
             dataGridViewClients.Visible = false;
-            button5.Visible = false;
-            button6.Visible = false;
-            button7.Visible = false;
+            btnEditSelected.Visible = false;
+            btnDeleteSelected.Visible = false;
+            btnSaveChanges.Visible = false;
             EndEditing();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnBack_Click(object sender, EventArgs e)
         {
             WelcomeForm welcomeForm = new WelcomeForm();
             welcomeForm.Show();
             this.Close();
         }
 
-        // Empty event handlers
-        private void label3_Click(object sender, EventArgs e) { }
-        private void textBox1_TextChanged(object sender, EventArgs e) { }
+        private void txtName_TextChanged(object sender, EventArgs e) { }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) { }
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) { }
         private void ClientForm_Load(object sender, EventArgs e) { }
