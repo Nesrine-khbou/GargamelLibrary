@@ -16,7 +16,7 @@ namespace GargmelWinForms
         public Form1()
         {
             InitializeComponent();
-            this.Size = new Size(1000, 700); // Set larger initial size
+            this.Size = new Size(1000, 700);
             this.MinimumSize = new Size(1000, 700);
             this.StartPosition = FormStartPosition.CenterScreen;
 
@@ -26,12 +26,10 @@ namespace GargmelWinForms
             ConfigureDataGridViews();
             SetupEventHandlers();
 
-            // Hide all DataGridViews initially
             ListBook.Visible = false;
             dgvSpellBooks.Visible = false;
             dgvRecipeBooks.Visible = false;
 
-            // Ensure grids can receive keyboard focus
             ListBook.TabStop = true;
             dgvSpellBooks.TabStop = true;
             dgvRecipeBooks.TabStop = true;
@@ -60,73 +58,70 @@ namespace GargmelWinForms
             this.ForeColor = Color.GhostWhite;
             this.Font = new Font("Lucida Handwriting", 10, FontStyle.Bold);
 
-            // Adjust control positions and sizes with proper spacing
+            // Control positioning
             label1.Location = new Point((this.ClientSize.Width - label1.Width) / 2, 40);
-
-            // Position labels and inputs with proper alignment
-            label2.Location = new Point(50, 75);  // Type label
+            label2.Location = new Point(50, 75);
             comboBox1.Location = new Point(50, 100);
             comboBox1.Size = new Size(200, 30);
-
-            label1.Location = new Point(50, 135);  // Serial label
+            label1.Location = new Point(50, 135);
             tbSerial.Location = new Point(50, 160);
             tbSerial.Size = new Size(200, 30);
-
-            label3.Location = new Point(50, 195);  // Title label
+            label3.Location = new Point(50, 195);
             tbTitle.Location = new Point(50, 220);
             tbTitle.Size = new Size(200, 30);
-
-            // Adjust group boxes and their internal controls
             groupBox1.Location = new Point(300, 100);
             groupBox1.Size = new Size(300, 100);
-
-            // Move magic type input to the right
-            label5.Location = new Point(10, 25);  // Inside groupBox1
-            cbMagicType.Location = new Point(130, 25);  // Moved right
+            label5.Location = new Point(10, 25);
+            cbMagicType.Location = new Point(130, 25);
             cbMagicType.Size = new Size(160, 30);
-
             groupBox2.Location = new Point(300, 220);
             groupBox2.Size = new Size(300, 100);
-
-            // Move number of recipes input to the left
-            label6.Location = new Point(10, 25);  // Inside groupBox2
-            tbNOR.Location = new Point(210, 25);  // Moved left
+            label6.Location = new Point(10, 25);
+            tbNOR.Location = new Point(210, 25);
             tbNOR.Size = new Size(70, 30);
-
-            // Position buttons
             bAdd.Location = new Point(50, 350);
             bAdd.Size = new Size(200, 40);
-
             bDisplay.Location = new Point(50, 400);
             bDisplay.Size = new Size(200, 40);
-
             btnShowSpellBooks.Location = new Point(650, 150);
             btnShowSpellBooks.Size = new Size(250, 40);
-            btnShowSpellBooks.Text = "Display Spell Books";
-
             btnShowRecipeBooks.Location = new Point(650, 200);
             btnShowRecipeBooks.Size = new Size(250, 40);
-            btnShowRecipeBooks.Text = "Display Recipe Books";
-
             btnReturn.Location = new Point(50, 500);
             btnReturn.Size = new Size(150, 40);
-
             btnBackToWelcome.Location = new Point(20, 20);
             btnBackToWelcome.Size = new Size(40, 40);
 
-            // DataGridView positioning
-            ListBook.Location = new Point(50, 250);
-            ListBook.Size = new Size(900, 400);
+            // DataGridView styling
+            var grids = new[] { ListBook, dgvSpellBooks, dgvRecipeBooks };
+            foreach (var grid in grids)
+            {
+                grid.EnableHeadersVisualStyles = false;
+                grid.BackgroundColor = Color.FromArgb(40, 10, 40);
+                grid.BorderStyle = BorderStyle.None;
+                grid.GridColor = Color.FromArgb(70, 30, 70);
+                grid.DefaultCellStyle.BackColor = Color.FromArgb(50, 20, 50);
+                grid.DefaultCellStyle.ForeColor = Color.AntiqueWhite;
+                grid.DefaultCellStyle.Font = new Font("Lucida Handwriting", 10);
+                grid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(90, 40, 90);
+                grid.DefaultCellStyle.SelectionForeColor = Color.White;
+                grid.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(60, 30, 60);
+                grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(60, 20, 60);
+                grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.AntiqueWhite;
+                grid.ColumnHeadersDefaultCellStyle.Font = new Font("Lucida Handwriting", 10, FontStyle.Bold);
+                grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                grid.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(60, 20, 60);
+                grid.RowHeadersDefaultCellStyle.ForeColor = Color.AntiqueWhite;
+                grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                grid.AllowUserToResizeRows = false;
+                grid.RowTemplate.Height = 30;
+                grid.Location = new Point((this.ClientSize.Width - 900) / 2, 250);
+                grid.Size = new Size(900, 400);
+            }
 
-            dgvSpellBooks.Location = new Point(50, 250);
-            dgvSpellBooks.Size = new Size(900, 400);
-
-            dgvRecipeBooks.Location = new Point(50, 250);
-            dgvRecipeBooks.Size = new Size(900, 400);
-
-
-        // Label styling
-        var labels = new[] { label1, label2, label3, label5, label6 };
+            // Label styling
+            var labels = new[] { label1, label2, label3, label5, label6 };
             foreach (var label in labels)
             {
                 label.ForeColor = Color.AntiqueWhite;
@@ -187,29 +182,51 @@ namespace GargmelWinForms
                 };
             }
 
-            // Special styling for back button
             btnBackToWelcome.Font = new Font("Lucida Handwriting", 10, FontStyle.Bold);
             btnBackToWelcome.Text = "←";
+        }
 
-            // DataGridView styling
-            var grids = new[] { ListBook, dgvSpellBooks, dgvRecipeBooks };
-            foreach (var grid in grids)
+        private DialogResult ShowStyledMessage(string message, string title = "Message")
+        {
+            Form messageForm = new Form()
             {
-                grid.EnableHeadersVisualStyles = true;
-                grid.BackgroundColor = SystemColors.Window;
-                grid.DefaultCellStyle.BackColor = SystemColors.Window;
-                grid.DefaultCellStyle.ForeColor = SystemColors.ControlText;
-                grid.DefaultCellStyle.Font = new Font("Segoe UI", 9);
-                grid.ColumnHeadersDefaultCellStyle.BackColor = SystemColors.Control;
-                grid.ColumnHeadersDefaultCellStyle.ForeColor = SystemColors.ControlText;
-                grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-                grid.RowHeadersDefaultCellStyle.BackColor = SystemColors.Control;
-                grid.RowHeadersDefaultCellStyle.ForeColor = SystemColors.ControlText;
-                grid.BorderStyle = BorderStyle.Fixed3D;
-                grid.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
-                grid.DefaultCellStyle.SelectionForeColor = SystemColors.HighlightText;
-                grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            }
+                Width = 400,
+                Height = 150,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterParent,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                Text = title,
+                BackColor = Color.FromArgb(50, 20, 50),
+                ForeColor = Color.AntiqueWhite
+            };
+
+            Label messageLabel = new Label()
+            {
+                Text = message,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Lucida Handwriting", 12, FontStyle.Bold)
+            };
+
+            Button okButton = new Button()
+            {
+                Text = "OK",
+                DialogResult = DialogResult.OK,
+                Dock = DockStyle.Bottom,
+                Height = 40,
+                BackColor = Color.FromArgb(70, 30, 70),
+                ForeColor = Color.AntiqueWhite,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Lucida Handwriting", 10)
+            };
+
+            okButton.FlatAppearance.BorderColor = Color.FromArgb(100, 50, 100);
+
+            messageForm.Controls.Add(messageLabel);
+            messageForm.Controls.Add(okButton);
+
+            return messageForm.ShowDialog();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -243,7 +260,6 @@ namespace GargmelWinForms
                 grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 grid.MultiSelect = false;
 
-                // Common columns
                 grid.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     DataPropertyName = "Id",
@@ -273,7 +289,6 @@ namespace GargmelWinForms
             ConfigureGrid(dgvSpellBooks);
             ConfigureGrid(dgvRecipeBooks);
 
-            // Type-specific columns
             dgvSpellBooks.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "TypeOfMagic",
@@ -293,25 +308,20 @@ namespace GargmelWinForms
 
         private void SetupEventHandlers()
         {
-            // Display buttons
             btnShowSpellBooks.Click += (s, e) => ShowBooks(LibraryManager.GetAllSpellBooks(), dgvSpellBooks);
             btnShowRecipeBooks.Click += (s, e) => ShowBooks(LibraryManager.GetAllRecipeBooks(), dgvRecipeBooks);
             bDisplay.Click += (s, e) => ShowBooks(LibraryManager.GetAllBooks(), ListBook);
 
-            // Navigation buttons
             btnReturn.Click += (s, e) => ShowMainForm();
             btnBackToWelcome.Click += (s, e) => { new WelcomeForm().Show(); this.Close(); };
 
-            // Book operations
             bAdd.Click += AddOrUpdateBook;
             cbMagicType.SelectedIndexChanged += (s, e) => typeOfMagic = (MagicType)cbMagicType.SelectedItem;
 
-            // Edit on double-click
             ListBook.CellDoubleClick += (s, e) => LoadBookForEditing(ListBook);
             dgvSpellBooks.CellDoubleClick += (s, e) => LoadBookForEditing(dgvSpellBooks);
             dgvRecipeBooks.CellDoubleClick += (s, e) => LoadBookForEditing(dgvRecipeBooks);
 
-            // Delete key handling
             ListBook.KeyDown += HandleDeleteKey;
             dgvSpellBooks.KeyDown += HandleDeleteKey;
             dgvRecipeBooks.KeyDown += HandleDeleteKey;
@@ -325,18 +335,78 @@ namespace GargmelWinForms
                 if (grid?.SelectedRows.Count > 0)
                 {
                     var book = (Book)grid.SelectedRows[0].DataBoundItem;
-                    if (MessageBox.Show($"Delete '{book.Title}'?", "Confirm Delete",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+
+                    Form confirmForm = new Form()
+                    {
+                        Width = 400,
+                        Height = 150,
+                        FormBorderStyle = FormBorderStyle.FixedDialog,
+                        StartPosition = FormStartPosition.CenterParent,
+                        MaximizeBox = false,
+                        MinimizeBox = false,
+                        Text = "Confirm Delete",
+                        BackColor = Color.FromArgb(50, 20, 50),
+                        ForeColor = Color.AntiqueWhite
+                    };
+
+                    Label messageLabel = new Label()
+                    {
+                        Text = $"Delete '{book.Title}'?",
+                        Dock = DockStyle.Fill,
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Font = new Font("Lucida Handwriting", 12, FontStyle.Bold)
+                    };
+
+                    FlowLayoutPanel buttonPanel = new FlowLayoutPanel()
+                    {
+                        Dock = DockStyle.Bottom,
+                        Height = 40,
+                        FlowDirection = FlowDirection.RightToLeft,
+                        Padding = new Padding(5)
+                    };
+
+                    Button noButton = new Button()
+                    {
+                        Text = "No",
+                        DialogResult = DialogResult.No,
+                        Width = 80,
+                        BackColor = Color.FromArgb(70, 30, 70),
+                        ForeColor = Color.AntiqueWhite,
+                        FlatStyle = FlatStyle.Flat,
+                        Font = new Font("Lucida Handwriting", 10)
+                    };
+
+                    Button yesButton = new Button()
+                    {
+                        Text = "Yes",
+                        DialogResult = DialogResult.Yes,
+                        Width = 80,
+                        BackColor = Color.FromArgb(70, 30, 70),
+                        ForeColor = Color.AntiqueWhite,
+                        FlatStyle = FlatStyle.Flat,
+                        Font = new Font("Lucida Handwriting", 10)
+                    };
+
+                    yesButton.FlatAppearance.BorderColor = Color.FromArgb(100, 50, 100);
+                    noButton.FlatAppearance.BorderColor = Color.FromArgb(100, 50, 100);
+
+                    buttonPanel.Controls.Add(yesButton);
+                    buttonPanel.Controls.Add(noButton);
+
+                    confirmForm.Controls.Add(messageLabel);
+                    confirmForm.Controls.Add(buttonPanel);
+
+                    if (confirmForm.ShowDialog() == DialogResult.Yes)
                     {
                         try
                         {
                             LibraryManager.DeleteBook(book.Id);
                             RefreshActiveGrid();
-                            MessageBox.Show("Book deleted successfully.");
+                            ShowStyledMessage("Book deleted successfully.", "Success");
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show($"Error deleting book: {ex.Message}");
+                            ShowStyledMessage($"Error deleting book: {ex.Message}", "Error");
                         }
                     }
                 }
@@ -375,7 +445,7 @@ namespace GargmelWinForms
         {
             if (!int.TryParse(tbSerial.Text, out int serial) || string.IsNullOrWhiteSpace(tbTitle.Text))
             {
-                MessageBox.Show("Please enter valid serial and title.");
+                ShowStyledMessage("Please enter valid serial and title.", "Validation Error");
                 return;
             }
 
@@ -386,9 +456,8 @@ namespace GargmelWinForms
                 if (isEditing && currentBook != null)
                 {
                     LibraryManager.UpdateBook(currentBook.Id, serial, tbTitle.Text, typeOfMagic, recipes);
-                    MessageBox.Show("Book updated!");
+                    ShowStyledMessage("Book updated successfully!", "Success");
 
-                    // Show the appropriate grid after update
                     if (currentBook is SpellBook)
                         ShowBooks(LibraryManager.GetAllSpellBooks(), dgvSpellBooks);
                     else if (currentBook is RecipeBook)
@@ -397,7 +466,7 @@ namespace GargmelWinForms
                 else
                 {
                     LibraryManager.AddBook(serial, tbTitle.Text, typeOfMagic, recipes);
-                    MessageBox.Show("Book added!");
+                    ShowStyledMessage("Book added successfully!", "Success");
                     ShowBooks(LibraryManager.GetAllBooks(), ListBook);
                 }
 
@@ -405,7 +474,7 @@ namespace GargmelWinForms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                ShowStyledMessage($"Error: {ex.Message}", "Error");
             }
         }
 

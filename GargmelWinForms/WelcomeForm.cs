@@ -38,7 +38,7 @@ namespace GargmelWinForms
             this.Font = new Font("Papyrus", 10, FontStyle.Regular);
 
             label1.BackColor = Color.Transparent;
-            label1.ForeColor = Color.FromArgb(201, 57, 28); ;
+            label1.ForeColor = Color.AntiqueWhite ;
             label1.Font = new Font("Old English Text MT", 18, FontStyle.Bold);
             label1.Text = "Welcome To Gargamel's Forbidden Library!";
             label1.AutoSize = true;
