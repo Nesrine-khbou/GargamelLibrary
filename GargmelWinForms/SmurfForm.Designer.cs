@@ -17,11 +17,11 @@
 
         private void InitializeComponent()
         {
-            label1 = new Label();
-            label2 = new Label();
+            lblName = new Label();
+            lblHeight = new Label();
             btnAdd = new Button();
             btnDisplay = new Button();
-            label3 = new Label();
+            lblDescription = new Label();
             comboBoxDescription = new ComboBox();
             txtName = new TextBox();
             dataGridViewSmurfs = new DataGridView();
@@ -35,21 +35,21 @@
             ((System.ComponentModel.ISupportInitialize)numericHeight).BeginInit();
             SuspendLayout();
 
-            // Label1 (Name)
-            label1.AutoSize = true;
-            label1.Location = new Point(46, 50);
-            label1.Name = "label1";
-            label1.Size = new Size(49, 20);
-            label1.TabIndex = 0;
-            label1.Text = "Name";
+            // lblName
+            lblName.AutoSize = true;
+            lblName.Location = new Point(46, 50);
+            lblName.Name = "lblName";
+            lblName.Size = new Size(49, 20);
+            lblName.TabIndex = 0;
+            lblName.Text = "Name";
 
-            // Label2 (Height)
-            label2.AutoSize = true;
-            label2.Location = new Point(46, 90);
-            label2.Name = "label2";
-            label2.Size = new Size(54, 20);
-            label2.TabIndex = 1;
-            label2.Text = "Height";
+            // lblHeight
+            lblHeight.AutoSize = true;
+            lblHeight.Location = new Point(46, 90);
+            lblHeight.Name = "lblHeight";
+            lblHeight.Size = new Size(54, 20);
+            lblHeight.TabIndex = 1;
+            lblHeight.Text = "Height";
 
             // btnAdd
             btnAdd.Location = new Point(421, 70);
@@ -69,13 +69,13 @@
             btnDisplay.UseVisualStyleBackColor = true;
             btnDisplay.Click += btnDisplay_Click;
 
-            // Label3 (Description)
-            label3.AutoSize = true;
-            label3.Location = new Point(46, 130);
-            label3.Name = "label3";
-            label3.Size = new Size(85, 20);
-            label3.TabIndex = 4;
-            label3.Text = "Description";
+            // lblDescription
+            lblDescription.AutoSize = true;
+            lblDescription.Location = new Point(46, 130);
+            lblDescription.Name = "lblDescription";
+            lblDescription.Size = new Size(85, 20);
+            lblDescription.TabIndex = 4;
+            lblDescription.Text = "Description";
 
             // comboBoxDescription
             comboBoxDescription.FormattingEnabled = true;
@@ -170,11 +170,11 @@
             Controls.Add(btnReturn);
             Controls.Add(txtName);
             Controls.Add(comboBoxDescription);
-            Controls.Add(label3);
+            Controls.Add(lblDescription);
             Controls.Add(btnDisplay);
             Controls.Add(btnAdd);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(lblHeight);
+            Controls.Add(lblName);
             Controls.Add(dataGridViewSmurfs);
             Name = "SmurfForm";
             Text = "SmurfForm";
@@ -186,11 +186,11 @@
 
         #endregion
 
-        private Label label1;
-        private Label label2;
+        private Label lblName;
+        private Label lblHeight;
         private Button btnAdd;
         private Button btnDisplay;
-        private Label label3;
+        private Label lblDescription;
         private ComboBox comboBoxDescription;
         private TextBox txtName;
         private DataGridView dataGridViewSmurfs;
